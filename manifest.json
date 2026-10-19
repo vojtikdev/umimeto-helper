@@ -1,0 +1,64 @@
+{
+  "manifest_version": 3,
+  "name": "Um\u00edme Helper",
+  "description": "Read a practice question, review its choices, and get an AI answer with an explanation.",
+  "version": "2.2.0",
+  "minimum_chrome_version": "114",
+  "permissions": ["storage"],
+  "host_permissions": ["https://api.openai.com/*"],
+  "optional_host_permissions": [
+    "https://*/*",
+    "http://localhost/*",
+    "http://127.0.0.1/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Um\u00edme Helper",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "options_page": "options.html",
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.umimeto.org/*",
+        "https://*.umimecesky.cz/*",
+        "https://*.umimematiku.cz/*",
+        "https://*.umimeanglicky.cz/*",
+        "https://*.umimeinformatiku.cz/*",
+        "https://*.umimefakta.cz/*",
+        "https://*.umimenemecky.cz/*"
+      ],
+      "js": [
+        "shared.js",
+        "extract.js",
+        "images.js",
+        "panel-theme.js",
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "commands": {
+    "toggle-panel": {
+      "suggested_key": {
+        "default": "Alt+Shift+U",
+        "mac": "Alt+Shift+U"
+      },
+      "description": "Show or hide the question panel"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

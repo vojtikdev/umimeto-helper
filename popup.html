@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Umíme Helper</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header>
+      <span class="logo">u</span>
+      <div>
+        <h1>Umíme Helper</h1>
+        <span class="muted">YOUR AI WORKSPACE</span>
+      </div>
+      <button id="settings" aria-label="Open settings" title="Settings">
+        ⚙
+      </button>
+    </header>
+
+    <div class="popup-heading">
+      <span>LET’S LEARN SOMETHING.</span>
+      <h2>Your practice,<br />in focus.</h2>
+    </div>
+
+    <section class="card">
+      <div class="eyebrow">CURRENT EXERCISE</div>
+      <h2 id="state">Connecting…</h2>
+      <p id="detail">Checking the active tab.</p>
+      <div class="actions">
+        <button id="toggle" class="primary" disabled>Open helper</button>
+        <button id="stop" disabled hidden>Stop</button>
+      </div>
+    </section>
+
+    <details id="quickOptions">
+      <summary>Quick actions</summary>
+      <div class="actions">
+        <button id="ask" disabled>Get a hint</button>
+        <button id="hide" disabled>Hide widget</button>
+        <button id="scan" disabled>Refresh question</button>
+        <button id="clear" disabled>Clear cached answers</button>
+      </div>
+    </details>
+
+    <details id="popupUsage">
+      <summary>Today’s usage</summary>
+      <div class="popup-metrics">
+        <div>
+          <span>REPORTED TODAY</span>
+          <strong id="popupTokens">—</strong>
+          <small>tokens</small>
+        </div>
+        <div>
+          <span>REQUESTS TODAY</span>
+          <strong id="popupRequests">—</strong>
+          <small id="popupUnknown">Local counters</small>
+        </div>
+      </div>
+      <p id="popupCost" class="notice"></p>
+    </details>
+
+    <details id="modelOptions">
+      <summary>Model &amp; automation</summary>
+      <label for="profile">ACTIVE MODEL</label>
+      <select id="profile" disabled>
+        <option>Loading models…</option>
+      </select>
+      <div class="setting">
+        <div>
+          <strong>Automatic answers</strong>
+          <p>Applies to supported tabs.</p>
+        </div>
+        <input
+          type="checkbox"
+          id="auto"
+          aria-label="Automatic answers"
+          disabled
+        />
+      </div>
+      <p id="clickNotice" class="notice" hidden>
+        Auto-click is enabled and may submit answers immediately.
+      </p>
+    </details>
+
+    <p class="notice">
+      Questions are sent to your selected provider. API charges may apply.
+    </p>
+
+    <div id="status" role="status" aria-live="polite"></div>
+
+    <footer>
+      <button id="history">History</button>
+      <button id="help">Settings</button>
+    </footer>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

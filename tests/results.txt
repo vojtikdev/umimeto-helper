@@ -1,0 +1,54 @@
+Umíme Helper 2.2 validation summary
+
+Full regression run: 43 tests, 42 passed, 1 skipped, 0 failed.
+Focused follow-up: 3 passed (setup flow, model settings, toolbar); includes one additional new test.
+Total distinct checks passed: 43; one real-browser check skipped.
+JavaScript syntax and manifest assets verified.
+
+Node 24, jsdom and mocked Chrome/provider APIs.
+Live provider calls, physical macOS installation and browser visual rendering remain unverified.
+
+PASS — solver validates input, returns choices and never sends page URL or API key as prompt
+PASS — credentials are omitted from public settings
+PASS — reject untrusted senders, empty questions and non-HTTPS API endpoints
+PASS — missing API key explains setup without a request
+SKIPPED — browser detects live-shaped DOM, solves, ignores stale results, and saves settings
+PASS — DOM interaction: detection, solve, edits, new questions, settings and minimizing
+PASS — settings migrate legacy credentials, save separate profiles, discover models and test connections
+PASS — settings navigation, preview, preference validation and profile deletion preserve boundaries
+PASS — auto answers and clicks once; unrelated DOM changes do not duplicate requests; repeats use cache
+PASS — auto off cancels queued request; hidden tabs and manual edits do not auto request
+PASS — uncertainty, multiple suggested choices, and duplicate text prevent auto-click
+PASS — a response racing a new question cannot click or display the old answer
+PASS — API failure pauses automatic requests and explicit resume permits one retry
+PASS — image context blocks automatic solving; disabled choices block clicking
+PASS — automation toggle accepts only an explicit boolean and persists it
+PASS — saved profiles route requests to the selected provider without exposing any stored keys
+PASS — keyless local profiles use loopback permission and omit authentication
+PASS — model discovery is settings-only and normalizes an API base URL
+PASS — connection test uses the draft profile without changing the saved active model
+PASS — switching models in the page discards an in-flight result
+PASS — fresh install and an empty saved profile list show clear setup state
+PASS — unsafe URLs and string no-auth flags cannot bypass connection validation
+PASS — structured provider errors and cooldown avoid repeat quota requests
+PASS — stop aborts the matching tab request, rejects duplicates, and permits another request
+PASS — presets exclude secrets, validate unsafe imports and do not accept injected credentials
+PASS — Stop hides pending answers and pauses automatic retries
+PASS — Tools navigation and local diagnostics do not send keys or make API calls
+PASS — toolbar handles a supported exercise and inaccessible tabs without broad permissions
+PASS — import review preserves existing keys and selection, strips incoming keys, and requests no permissions
+PASS — vision payload contains inline images, concise prompts and a controlled output cap
+PASS — images require an explicitly enabled vision model and reject remote URLs or oversized payloads
+PASS — usage separates missing usage, enforces daily limits, and does not double-count cached input
+PASS — truncated answers keep reported usage and explain the output cap instead of displaying partial JSON
+PASS — simultaneous requests obey the shared request budget and usage resets wait for in-flight work
+PASS — image extraction captures only exercise visuals and labels image-only choices
+PASS — local image resize preserves aspect ratio, caps dimensions and uses a content hash
+PASS — panel attaches exercise images, reuses identical visual answers, and blocks unreadable pictures
+PASS — hint request never returns selectable choices, uses a separate prompt and records its mode
+PASS — hint-first reveals only on request, caches modes separately and never auto-clicks hints
+PASS — hide removes the entire widget, preserves a ready answer and pauses until explicitly resumed
+PASS — history is local, bounded, expires old entries, supports opt-out and rejects webpage access
+PASS — cost estimates use cached input rates once and retain currency totals
+PASS — history renders text safely, searches saved questions and hides answers behind details
+PASS — minimal panel presents setup, hint and reveal as distinct next steps

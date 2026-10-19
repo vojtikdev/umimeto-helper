@@ -1,0 +1,785 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Umíme Helper · Settings</title>
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <a class="brand" href="#models"
+          ><span class="brandmark">u</span
+          ><span>Umíme Helper<small>YOUR AI CONTROL CENTER</small></span></a
+        >
+        <div class="nav-label">WORKSPACE</div>
+        <nav aria-label="Settings sections">
+          <button data-tab="models" class="nav active" aria-current="page">
+            <span>◈</span> Models <small id="profileCount">1</small></button
+          ><button data-tab="history" class="nav"><span>◷</span> History</button
+          ><button data-tab="usage" class="nav"><span>◴</span> Usage</button
+          ><button data-tab="automation" class="nav">
+            <span>↻</span> Learning</button
+          ><button data-tab="appearance" class="nav">
+            <span>◐</span> Appearance</button
+          ><button data-tab="detection" class="nav">
+            <span>⌖</span> Detection</button
+          ><button data-tab="tools" class="nav"><span>⚒</span> Help</button>
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="active-indicator">
+            <i></i><span id="activeSummary">Set up a model</span>
+          </div>
+          <p>
+            Independent extension<br /><span
+              >Version 2.2 · Made for Chrome</span
+            >
+          </p>
+        </div>
+      </aside>
+      <main>
+        <header class="topbar">
+          <span>SETTINGS <b>/</b> <span id="breadcrumb">Models</span></span
+          ><span class="pill">VISION + USAGE</span>
+        </header>
+        <section id="tab-models" class="tabpage">
+          <div class="pagehead">
+            <div>
+              <div class="eyebrow">01 / CONNECTIONS</div>
+              <h1>Models</h1>
+              <p>
+                Connect a provider, enable vision, and make every request count.
+              </p>
+            </div>
+            <button id="newProfile" class="primary">＋ Add model</button>
+          </div>
+          <div class="section-heading">
+            <h2>Saved models</h2>
+            <span>Keys stay in this browser profile</span>
+          </div>
+          <div
+            id="profiles"
+            class="profile-grid"
+            aria-label="Saved model profiles"
+          ></div>
+          <details id="modelEditor" open>
+            <summary>Model setup</summary>
+            <form id="settings" class="card editor">
+              <div class="card-heading">
+                <div>
+                  <span class="eyebrow">CONNECTION</span>
+                  <h2 id="editorTitle">Set up your model</h2>
+                </div>
+                <span id="draftState" class="pill">PROFILE</span>
+              </div>
+              <div class="grid">
+                <label
+                  >Profile name<input
+                    id="profileName"
+                    required
+                    maxlength="60"
+                    placeholder="My study model" /></label
+                ><label>Provider<select id="provider"></select></label>
+              </div>
+              <p id="providerHelp" class="hint"></p>
+              <label
+                >API base URL or chat endpoint<input
+                  id="endpoint"
+                  type="url"
+                  required
+                  placeholder="https://your-provider.com/v1"
+                  spellcheck="false"
+              /></label>
+              <div class="grid">
+                <label
+                  >Authentication<select id="auth">
+                    <option value="key">API key</option>
+                    <option value="none">
+                      No authentication · self-hosted
+                    </option>
+                  </select></label
+                ><label id="keyField"
+                  >API key
+                  <div class="input-action">
+                    <input
+                      id="apiKey"
+                      type="password"
+                      autocomplete="off"
+                      spellcheck="false"
+                      placeholder="Paste your provider’s key"
+                    /><button
+                      type="button"
+                      id="showKey"
+                      aria-label="Show API key"
+                      aria-pressed="false"
+                    >
+                      Show
+                    </button>
+                  </div></label
+                >
+              </div>
+              <div class="model-heading">
+                <label for="model">Model ID</label
+                ><button id="fetchModels" class="text-button" type="button">
+                  ↻ Fetch available models
+                </button>
+              </div>
+              <input
+                id="model"
+                list="modelList"
+                required
+                maxlength="200"
+                placeholder="Type a model ID or fetch the list"
+                spellcheck="false"
+              /><datalist id="modelList"></datalist>
+              <p id="modelHint" class="hint">
+                Any text model that supports OpenAI-compatible Chat Completions.
+                Your provider controls availability and pricing.
+              </p>
+              <div class="grid">
+                <label class="check"
+                  ><input id="vision" type="checkbox" /> This model supports
+                  image input</label
+                ><label
+                  >Output cap parameter<select id="tokenField">
+                    <option value="max_tokens">
+                      max_tokens · compatible providers
+                    </option>
+                    <option value="max_completion_tokens">
+                      max_completion_tokens · OpenAI / reasoning
+                    </option>
+                  </select></label
+                >
+              </div>
+              <p class="hint">
+                Enable vision only for a model that accepts image_url content.
+                Model discovery does not verify vision capability. Choose the
+                token-cap parameter supported by your endpoint.
+              </p>
+              <details>
+                <summary>Cost estimate · optional</summary>
+                <p class="hint">
+                  Enter your provider’s prices per 1 million tokens. Blank means
+                  unknown; 0 means free. Estimates exclude taxes, fees and
+                  discounts. Cached input is charged at its own rate when
+                  reported.
+                </p>
+                <div class="grid">
+                  <label
+                    >Currency<select id="currency">
+                      <option>USD</option>
+                      <option>EUR</option>
+                      <option>CZK</option>
+                    </select></label
+                  ><label
+                    >Input price / 1M tokens<input
+                      id="inputRate"
+                      type="number"
+                      min="0"
+                      max="1000000"
+                      step="any"
+                      placeholder="Not configured" /></label
+                  ><label
+                    >Output price / 1M tokens<input
+                      id="outputRate"
+                      type="number"
+                      min="0"
+                      max="1000000"
+                      step="any"
+                      placeholder="Not configured" /></label
+                  ><label
+                    >Cached input price / 1M tokens<input
+                      id="cachedRate"
+                      type="number"
+                      min="0"
+                      max="1000000"
+                      step="any"
+                      placeholder="Use normal input price"
+                  /></label>
+                </div>
+              </details>
+              <div class="editor-footer">
+                <div class="actions">
+                  <button type="submit" class="primary">
+                    Save & use model ↗</button
+                  ><button type="button" id="testConnection" class="secondary">
+                    Test connection
+                  </button>
+                </div>
+                <button
+                  id="deleteProfile"
+                  type="button"
+                  class="text-button danger"
+                >
+                  Remove profile
+                </button>
+              </div>
+              <p class="fineprint">
+                Test sends a small sample question and may use API quota. Cloud
+                keys are saved locally without encryption. Local servers must
+                already be running.
+              </p>
+            </form>
+          </details>
+          <div class="info-strip">
+            <span>ⓘ</span>
+            <p>
+              <strong>Looking for Claude or another model family?</strong> Use a
+              provider such as OpenRouter with an OpenAI-compatible API. Native
+              Anthropic Messages and other incompatible APIs need a compatible
+              gateway.
+            </p>
+          </div>
+        </section>
+        <form id="preferences" novalidate>
+          <section id="tab-history" class="tabpage" hidden>
+            <div class="pagehead">
+              <div>
+                <h1>History</h1>
+                <p>
+                  Your recent hints and answers. Stored only in this browser.
+                </p>
+              </div>
+              <button id="refreshHistory" class="secondary" type="button">
+                Refresh
+              </button>
+            </div>
+            <div class="card">
+              <label class="check"
+                ><input type="checkbox" id="historyEnabled" /> Save new hints
+                and answers locally</label
+              >
+              <div class="grid">
+                <label
+                  >Keep entries for<select id="historyDays">
+                    <option value="1">1 day</option>
+                    <option value="7">7 days</option>
+                    <option value="30">30 days</option>
+                  </select></label
+                ><label
+                  >Maximum entries<select id="historyLimit">
+                    <option value="10">10</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                  </select></label
+                >
+              </div>
+              <p class="hint">
+                Export downloads your saved study text. Text, model names, token
+                counts and cost estimates are saved locally without encryption.
+                Images, API keys and page URLs are excluded. Expired entries are
+                removed when history is opened or new entries are saved. Turning
+                history off stops new saves; use Clear history to remove
+                existing entries.
+              </p>
+            </div>
+            <div class="history-toolbar">
+              <input
+                id="historySearch"
+                type="search"
+                placeholder="Search question, answer or model"
+                aria-label="Search history"
+              /><button id="exportHistory" class="secondary" type="button">
+                Export JSON</button
+              ><button id="clearHistory" class="secondary" type="button">
+                Clear history
+              </button>
+            </div>
+            <p id="historyCount" class="hint" role="status"></p>
+            <div id="historyList"></div>
+          </section>
+          <section id="tab-usage" class="tabpage" hidden>
+            <div class="pagehead">
+              <div>
+                <div class="eyebrow">02 / RESOURCE CONTROL</div>
+                <h1>Usage & efficiency</h1>
+                <p>Local usage totals. Lean prompts. Clear limits.</p>
+              </div>
+              <button id="refreshUsage" type="button" class="secondary">
+                Refresh totals ↻
+              </button>
+            </div>
+            <div class="metric-grid">
+              <article>
+                <span>REPORTED TOKENS · TODAY</span
+                ><strong id="totalTokens">—</strong
+                ><small>Input + output, including cached input</small>
+              </article>
+              <article>
+                <span>REQUESTS · TODAY</span
+                ><strong id="totalRequests">—</strong
+                ><small>Includes connection tests and failed attempts</small>
+              </article>
+              <article>
+                <span>CACHED INPUT · TODAY</span
+                ><strong id="cachedTokens">—</strong
+                ><small>Provider-reported; already included in input</small>
+              </article>
+            </div>
+            <div class="card usage-report">
+              <div class="section-heading">
+                <h2>Today’s activity</h2>
+                <span id="usageDate"></span>
+              </div>
+              <p id="costSummary" class="hint"></p>
+              <p id="usageSummary" class="hint">Loading…</p>
+              <progress id="tokenProgress" value="0" max="100"></progress>
+              <p class="hint">
+                Token threshold is a soft guard based on reported usage, not a
+                billing cap. Missing usage and in-flight requests can exceed it.
+                Day boundaries use this computer’s local time. Only aggregate
+                counters are stored.
+              </p>
+              <details>
+                <summary>Recent daily totals · last 14 active days</summary>
+                <div class="table-scroll">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Day</th>
+                        <th>Requests</th>
+                        <th>Input</th>
+                        <th>Output</th>
+                        <th>Unknown usage</th>
+                      </tr>
+                    </thead>
+                    <tbody id="usageRows"></tbody>
+                  </table>
+                </div>
+              </details>
+              <button id="resetUsage" type="button" class="text-button">
+                Reset local counters
+              </button>
+            </div>
+            <div class="card">
+              <h2>Response efficiency</h2>
+              <div class="grid">
+                <label
+                  >Explanation style<select id="answerStyle">
+                    <option value="concise">Concise · one sentence</option>
+                    <option value="steps">
+                      Step by step · up to four steps
+                    </option>
+                  </select></label
+                ><label
+                  >Maximum output tokens<input
+                    id="outputLimit"
+                    type="number"
+                    min="128"
+                    max="4096"
+                    required /></label
+                ><label
+                  >Daily request limit · 0 = unlimited<input
+                    id="dailyRequestLimit"
+                    type="number"
+                    min="0"
+                    max="10000"
+                    required /></label
+                ><label
+                  >Reported token threshold · 0 = off<input
+                    id="dailyTokenLimit"
+                    type="number"
+                    min="0"
+                    max="10000000"
+                    required
+                /></label>
+              </div>
+              <p class="hint">
+                No chat history or full-page text is sent. Repeated answers
+                reuse a bounded page-session cache. Reasoning models may spend
+                output tokens internally; raise the cap if answers are cut off.
+              </p>
+            </div>
+            <div class="card">
+              <h2>Image efficiency</h2>
+              <div class="grid">
+                <label
+                  >Maximum image edge<select id="imageSize">
+                    <option value="768">768 px · smallest payload</option>
+                    <option value="1280">1280 px · balanced</option>
+                    <option value="1600">1600 px · fine print</option>
+                  </select></label
+                ><label
+                  >Vision detail<select id="imageDetail">
+                    <option value="auto">Auto · provider decides</option>
+                    <option value="low">
+                      Low · lower detail where supported
+                    </option>
+                  </select></label
+                >
+              </div>
+              <p class="hint">
+                Pictures are resized locally, converted to JPEG, and previewed
+                before sending. Low detail may miss small text. Image token
+                costs vary by model; the text estimate excludes image tokens.
+                These controls affect newly captured images; Rescan to reload
+                the exercise.
+              </p>
+            </div>
+          </section>
+          <section id="tab-automation" class="tabpage" hidden>
+            <div class="pagehead">
+              <div>
+                <div class="eyebrow">LESS CLICKING, MORE FLOW</div>
+                <h1>Learning & automation</h1>
+                <p>Choose when the helper thinks, and when it acts.</p>
+              </div>
+            </div>
+            <div class="card">
+              <div class="toggle-row">
+                <div>
+                  <h2>Hint first</h2>
+                  <p>
+                    Ask for guidance before the answer. Show answer makes a
+                    separate request. Hints are never auto-clicked.
+                  </p>
+                </div>
+                <label class="switch"
+                  ><input id="hintFirst" type="checkbox" /><span></span
+                  ><b class="sr-only">Hint first</b></label
+                >
+              </div>
+              <div class="toggle-row">
+                <div>
+                  <h2>Automatic answers</h2>
+                  <p>
+                    Get an answer when a new text question settles on the page.
+                  </p>
+                </div>
+                <label class="switch"
+                  ><input id="autoSolve" type="checkbox" /><span></span
+                  ><b class="sr-only">Automatic answers</b></label
+                >
+              </div>
+              <div class="toggle-row">
+                <div>
+                  <h2>Click the suggested choice</h2>
+                  <p>
+                    May submit immediately and affect your score. Only one
+                    unique choice with no reported uncertainty is clicked.
+                  </p>
+                </div>
+                <label class="switch"
+                  ><input id="autoClick" type="checkbox" /><span></span
+                  ><b class="sr-only">Automatically click the choice</b></label
+                >
+              </div>
+              <div class="grid">
+                <label
+                  >Question settling delay<select id="autoDelay">
+                    <option value="500">Fast · 0.5 seconds</option>
+                    <option value="1500">Balanced · 1.5 seconds</option>
+                    <option value="3000">Relaxed · 3 seconds</option>
+                    <option value="5000">Patient · 5 seconds</option>
+                  </select></label
+                ><label
+                  >Explanation language<select id="language">
+                    <option>Czech</option>
+                    <option>English</option>
+                  </select></label
+                >
+              </div>
+            </div>
+            <div class="info-strip">
+              <span>↻</span>
+              <p>
+                Automation runs in visible tabs, reuses repeated answers, and
+                pauses after API errors. Images, ambiguous choices, and written
+                answers stay manual for clicking. It never presses Next.
+              </p>
+            </div>
+          </section>
+          <section id="tab-appearance" class="tabpage" hidden>
+            <div class="pagehead">
+              <div>
+                <div class="eyebrow">A LITTLE MORE YOU</div>
+                <h1>Appearance</h1>
+                <p>Fine-tune the panel. See changes in the preview below.</p>
+              </div>
+            </div>
+            <div class="appearance-layout">
+              <div class="card">
+                <label class="check"
+                  ><input id="minimalUI" type="checkbox" /> Minimal
+                  interface</label
+                ><label class="check"
+                  ><input id="showTokenDetails" type="checkbox" /> Show token
+                  and cost details below each answer</label
+                ><label
+                  >On a new exercise page<select id="panelStart">
+                    <option value="launcher">Show a small launcher</option>
+                    <option value="panel">Open the panel</option>
+                    <option value="hidden">Completely hidden</option>
+                  </select></label
+                >
+                <p class="hint">
+                  × hides the widget and pauses automation in that tab. Reopen
+                  using the toolbar or Option/Alt + Shift + U. − only minimizes
+                  the panel.
+                </p>
+                <div class="grid">
+                  <label
+                    >Theme<select id="theme">
+                      <option value="dark">Dark</option>
+                      <option value="light">Light</option>
+                      <option value="auto">Follow system</option>
+                    </select></label
+                  ><label>Accent color<input type="color" id="accent" /></label
+                  ><label
+                    >Panel side<select id="position">
+                      <option value="right">Right</option>
+                      <option value="left">Left</option>
+                    </select></label
+                  ><label
+                    >Panel width<input
+                      id="panelWidth"
+                      type="number"
+                      min="320"
+                      max="520"
+                      step="10"
+                      required /></label
+                  ><label
+                    >Interface text<input
+                      id="fontSize"
+                      type="number"
+                      min="12"
+                      max="20"
+                      required /></label
+                  ><label
+                    >Answer text<input
+                      id="answerSize"
+                      type="number"
+                      min="22"
+                      max="44"
+                      required
+                  /></label>
+                </div>
+                <label class="check"
+                  ><input id="showExplanation" type="checkbox" /> Expand
+                  explanations by default</label
+                >
+              </div>
+              <div class="preview-area">
+                <span class="eyebrow">LIVE PREVIEW · SAMPLE ANSWER</span>
+                <div class="preview" id="preview">
+                  <div class="preview-head">
+                    <span class="brandmark">u</span><strong>Umíme Helper</strong
+                    ><span>−</span>
+                  </div>
+                  <div class="preview-model">◈ Your selected model</div>
+                  <div class="preview-result">
+                    <span class="eyebrow">SUGGESTED ANSWER</span>
+                    <div id="previewAnswer">4</div>
+                    <div class="preview-choice">
+                      <small>CHOICE 2</small><strong>4</strong>
+                    </div>
+                    <p id="previewExplanation">
+                      Adding two and two gives four.
+                    </p>
+                  </div>
+                  <div class="preview-buttons">
+                    <span>Ask AI ↗</span><span>Auto off</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section id="tab-detection" class="tabpage" hidden>
+            <div class="pagehead">
+              <div>
+                <div class="eyebrow">GET THE CONTEXT RIGHT</div>
+                <h1>Detection</h1>
+                <p>
+                  Defaults cover common Umíme exercises. Adjust only when
+                  needed.
+                </p>
+              </div>
+            </div>
+            <div class="card">
+              <div class="toggle-row">
+                <div>
+                  <h2>Watch question changes</h2>
+                  <p>
+                    Refresh the captured text as the exercise changes.
+                    Auto-answer also enables watching.
+                  </p>
+                </div>
+                <label class="switch"
+                  ><input id="watch" type="checkbox" /><span></span
+                  ><b class="sr-only">Watch question changes</b></label
+                >
+              </div>
+              <label
+                >Question CSS selector<textarea
+                  id="questionSelector"
+                  rows="3"
+                  required
+                  spellcheck="false"
+                ></textarea></label
+              ><label
+                >Individual choice CSS selector<textarea
+                  id="choicesSelector"
+                  rows="3"
+                  required
+                  spellcheck="false"
+                ></textarea>
+              </label>
+              <p class="hint">
+                Match question content and individual answer elements, not the
+                entire page. Hidden content is excluded.
+              </p>
+            </div>
+            <div class="info-strip">
+              <span>⌖</span>
+              <p>
+                If a question is missed, use <strong>Use selection</strong> in
+                the panel, or paste and edit the text. Images inside matching
+                exercise elements are attached for review. Audio is not
+                supported.
+              </p>
+            </div>
+          </section>
+          <div class="savebar" id="savebar" hidden>
+            <span id="preferenceState"
+              >Preferences are saved separately from model profiles.</span
+            ><button id="reset" type="button" class="secondary">
+              Reset preferences</button
+            ><button type="submit" class="primary">Save preferences</button>
+          </div>
+        </form>
+        <section id="tab-tools" class="tabpage" hidden>
+          <div class="pagehead">
+            <div>
+              <div class="eyebrow">READY FOR EVERY SESSION</div>
+              <h1>Tools & help</h1>
+              <p>Move your setup, check your connection, or get unstuck.</p>
+            </div>
+          </div>
+          <div class="card">
+            <h2>Portable model presets</h2>
+            <p class="hint">
+              Export model names, endpoints and IDs. API keys and automation
+              settings are always excluded. Imported cloud profiles need a new
+              key before use. Existing profiles are kept.
+            </p>
+            <div class="actions">
+              <button type="button" id="exportModels" class="primary">
+                Export presets ↓</button
+              ><button type="button" id="chooseImport" class="secondary">
+                Choose JSON file</button
+              ><input
+                type="file"
+                id="importFile"
+                accept=".json,application/json"
+                hidden
+              />
+            </div>
+            <div id="importReview" hidden>
+              <h3>Review import</h3>
+              <ul id="importList"></ul>
+              <p class="hint">
+                Import keeps your current model selected and does not grant new
+                host access. On a fresh setup, the first imported profile is
+                selected with automation off. Open a profile, add your key, then
+                Save & use to grant access.
+              </p>
+              <button id="confirmImport" type="button" class="primary">
+                Import these profiles</button
+              ><button id="cancelImport" type="button" class="secondary">
+                Cancel
+              </button>
+            </div>
+          </div>
+          <div class="card">
+            <h2>Connection checklist</h2>
+            <p class="hint">
+              Checks local configuration and permissions without contacting your
+              AI provider. The report contains no keys, endpoints, question
+              text, or browsing history.
+            </p>
+            <div class="actions">
+              <button id="diagnose" type="button" class="secondary">
+                Run local checks</button
+              ><button id="copyReport" type="button" class="secondary" disabled>
+                Copy report
+              </button>
+            </div>
+            <pre id="diagnostics" class="hint" aria-live="polite"></pre>
+          </div>
+          <div class="card">
+            <h2>Quick help</h2>
+            <details>
+              <summary>How do I use the extension?</summary>
+              <p>
+                Connect a model in Models, then open an Umíme exercise and check
+                the captured text. Press Ask AI. Pin Umíme Helper using Chrome’s
+                Extensions menu for quick controls.
+              </p>
+            </details>
+            <details>
+              <summary>Keyboard shortcuts</summary>
+              <p>
+                Option + Shift + U on macOS (Alt + Shift + U elsewhere) toggles
+                the panel. Escape minimizes a focused panel. Customize shortcuts
+                at chrome://extensions/shortcuts if the default conflicts.
+              </p>
+            </details>
+            <details>
+              <summary>No panel or question detected?</summary>
+              <p>
+                Refresh the exercise after installing or updating. Check
+                Chrome’s extension site access. Use Rescan, select text on the
+                page and choose Use selection, or adjust Detection selectors.
+              </p>
+            </details>
+            <details>
+              <summary>API errors, limits or local servers</summary>
+              <p>
+                Use Test connection in Models. Rejected key: verify the key and
+                model access. Rate limit: wait for the displayed cooldown and
+                check quota. Local model: start its server and allow the
+                extension origin if the server blocks it. Native APIs require an
+                OpenAI-compatible gateway.
+              </p>
+            </details>
+            <details>
+              <summary>What does Stop do?</summary>
+              <p>
+                Stop cancels the browser request and pauses auto-answer in that
+                tab. Your provider may continue processing or charge for a
+                request it already received. There are no silent retries.
+              </p>
+            </details>
+            <details>
+              <summary>Privacy and removal</summary>
+              <p>
+                Keys are saved locally without encryption and are not exposed to
+                webpage scripts. Prompts go only to the configured provider.
+                Answers are cached in page memory and disappear on refresh;
+                Clear session answers removes them sooner. Remove a model to
+                delete its saved key. Uninstalling removes extension settings.
+                API host permissions can be managed in Chrome’s extension
+                settings.
+              </p>
+            </details>
+          </div>
+        </section>
+        <footer>
+          AI suggestions can be wrong. Umíme Helper is not affiliated with Umíme
+          to.
+        </footer>
+      </main>
+    </div>
+    <div
+      class="toast"
+      id="status"
+      role="status"
+      aria-live="polite"
+      hidden
+    ></div>
+    <script src="shared.js"></script>
+    <script src="presets.js"></script>
+    <script src="options.js"></script>
+  </body>
+</html>
