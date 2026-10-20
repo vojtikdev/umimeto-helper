@@ -1,14 +1,15 @@
+
 Umime.panelCSS = `
 :host {
-  --accent: #8b7cff;
-  --accent-ink: #ffffff;
-  --bg: #10111a;
-  --fg: #f7f7fb;
-  --muted: #a8aabd;
-  --line: #2b2d3d;
-  --field: #191b29;
-  --font: 14px;
-  --answer-size: 32px;
+  --accent: #b8d5ae;
+  --accent-ink: #14251b;
+  --bg: #141d19;
+  --fg: #f0f3ed;
+  --muted: #a6b6aa;
+  --line: #34463b;
+  --field: #1d2923;
+  --font: 13px;
+  --answer-size: 28px;
 }
 
 * {
@@ -22,7 +23,7 @@ Umime.panelCSS = `
 .panel,
 .launcher {
   color: var(--fg);
-  font: var(--font)/1.5 system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font: var(--font)/1.55 system-ui, -apple-system, sans-serif;
 }
 
 button,
@@ -33,24 +34,22 @@ textarea {
 }
 
 button {
+  padding: 10px 13px;
   border: 1px solid var(--line);
   border-radius: 10px;
   background: var(--field);
   color: var(--fg);
   cursor: pointer;
-  padding: 10px 13px;
-  transition: border-color .15s, background .15s, transform .15s;
+  transition: border-color .15s, background .15s;
 }
 
-button:hover {
-  border-color: color-mix(in srgb, var(--accent) 60%, var(--line));
-  background: color-mix(in srgb, var(--accent) 12%, var(--field));
-  transform: translateY(-1px);
+button:hover:not(:disabled) {
+  border-color: var(--accent);
 }
 
 button:disabled {
-  cursor: wait;
   opacity: .45;
+  cursor: wait;
 }
 
 button:focus-visible,
@@ -58,38 +57,41 @@ input:focus-visible,
 select:focus-visible,
 textarea:focus-visible,
 summary:focus-visible {
-  outline: 3px solid var(--accent);
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
 
+/* Panel */
+
 .panel {
-  width: min(var(--panel-width, 420px), calc(100vw - 32px));
-  max-height: calc(100dvh - 64px);
+  width: min(var(--panel-width, 410px), calc(100vw - 24px));
+  max-height: calc(100dvh - 40px);
   overflow: auto;
   overscroll-behavior: contain;
-  padding: 20px;
+  padding: 21px;
   border: 1px solid var(--line);
-  border-radius: 22px;
-  background:
-    radial-gradient(circle at 100% 0, color-mix(in srgb, var(--accent) 13%, transparent), transparent 34%),
-    var(--bg);
-  box-shadow: 0 24px 80px #05050b99;
+  border-radius: 18px;
+  background: var(--bg);
+  box-shadow: 0 14px 48px #0004;
   scrollbar-color: var(--line) transparent;
 }
 
 .panel-kicker {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 16px;
+  gap: 10px;
+  margin-bottom: 17px;
   color: var(--muted);
-  font-size: 9px;
-  font-weight: 750;
-  letter-spacing: 1.5px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .3px;
 }
 
 .panel-kicker span {
   color: var(--accent);
 }
+
+/* Header */
 
 .bar,
 .row {
@@ -100,8 +102,9 @@ summary:focus-visible {
 
 .bar strong {
   flex: 1;
-  font-size: 18px;
-  letter-spacing: -.5px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -.4px;
 }
 
 .bar button {
@@ -111,58 +114,66 @@ summary:focus-visible {
   color: var(--muted);
 }
 
+.bar button:hover {
+  color: var(--fg);
+}
+
 .brand {
   display: grid;
-  width: 34px;
-  height: 34px;
   place-items: center;
+  flex: none;
+  width: 35px;
+  height: 35px;
   border-radius: 11px;
   background: var(--accent);
   color: var(--accent-ink);
-  font-size: 23px;
-  font-weight: 900;
+  font-size: 22px;
+  font-weight: 800;
 }
+
+/* Question */
 
 .question-preview {
   display: -webkit-box;
   overflow: hidden;
   margin: 18px 0;
   color: var(--muted);
-  font-size: 13px;
-  line-height: 1.65;
+  font-size: 12px;
+  line-height: 1.7;
   overflow-wrap: anywhere;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
 }
 
+/* Result */
+
 .result {
-  padding: 20px;
-  margin: 16px 0;
+  padding: 19px;
+  margin: 15px 0;
   border: 1px solid var(--line);
-  border-top: 3px solid var(--accent);
-  border-radius: 16px;
+  border-radius: 14px;
   background: var(--field);
 }
 
-.result[data-uncertain='true'] {
-  border-top-color: #edbd67;
+.result[data-uncertain="true"] {
+  border-color: #bfa36c;
 }
 
 .eyebrow {
-  margin-bottom: 12px;
+  margin-bottom: 11px;
   color: var(--muted);
   font-size: 10px;
-  font-weight: 750;
-  letter-spacing: 1px;
+  font-weight: 700;
+  letter-spacing: .5px;
   text-transform: uppercase;
 }
 
 #answer {
   color: var(--fg);
   font-size: var(--answer-size);
-  font-weight: 750;
-  line-height: 1.2;
-  letter-spacing: -1px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -.8px;
   overflow-wrap: anywhere;
   white-space: pre-wrap;
 }
@@ -170,41 +181,44 @@ summary:focus-visible {
 #matched {
   display: grid;
   gap: 8px;
-  margin-top: 18px;
+  margin-top: 17px;
 }
 
 .choice {
   display: flex;
   align-items: baseline;
   gap: 11px;
-  padding: 11px 12px;
-  border-left: 3px solid var(--accent);
-  border-radius: 8px;
-  background: color-mix(in srgb, var(--accent) 11%, var(--bg));
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--bg);
   overflow-wrap: anywhere;
 }
 
 .choice b {
-  color: var(--muted);
-  font-size: 10px;
-  letter-spacing: .5px;
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 700;
   white-space: nowrap;
 }
 
 .choice span {
   min-width: 0;
-  font-weight: 650;
+  font-weight: 600;
 }
 
+/* Explanation */
+
 .explanation {
-  padding-top: 14px;
-  margin-top: 18px;
+  padding-top: 15px;
+  margin-top: 17px;
   border-top: 1px solid var(--line);
 }
 
 #explanation {
   color: var(--muted);
-  line-height: 1.7;
+  font-size: 12px;
+  line-height: 1.75;
   overflow-wrap: anywhere;
   white-space: pre-wrap;
 }
@@ -213,8 +227,8 @@ summary:focus-visible {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  margin-top: 18px;
+  gap: 10px;
+  margin-top: 17px;
 }
 
 #answerMeta,
@@ -234,9 +248,11 @@ summary:focus-visible {
   white-space: nowrap;
 }
 
+/* Actions */
+
 .row {
   flex-wrap: wrap;
-  margin-top: 10px;
+  margin-top: 11px;
 }
 
 .row button {
@@ -246,38 +262,52 @@ summary:focus-visible {
 }
 
 .ask {
-  min-height: 44px;
-  border-color: transparent;
+  min-height: 43px;
+  border-color: var(--accent);
   background: var(--accent);
   color: var(--accent-ink);
-  font-weight: 800;
+  font-weight: 750;
 }
 
-.ask:hover {
-  border-color: transparent;
-  background: var(--accent);
-  filter: brightness(1.08);
+.ask:hover:not(:disabled) {
+  border-color: var(--accent);
+  filter: brightness(.95);
 }
+
+.row:not(:has(button:not([hidden]))) {
+  display: none;
+}
+
+/* Status */
 
 #status {
-  min-height: 24px;
-  padding: 14px 0 4px;
+  min-height: 22px;
+  padding: 13px 0 3px;
   color: var(--muted);
   font-size: 11px;
   white-space: pre-wrap;
 }
 
-#status[data-error='true'] {
-  color: #ffb4a4;
+#status[data-error="true"] {
+  color: #f0aa9a;
 }
+
+#panel[data-busy="true"] #status::before {
+  display: inline-block;
+  margin-right: 7px;
+  color: var(--accent);
+  content: "◌";
+  animation: spin 1s linear infinite;
+}
+
+/* Inputs */
 
 label {
   display: block;
-  margin: 14px 0 6px;
+  margin: 13px 0 7px;
   color: var(--muted);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: .7px;
+  font-size: 11px;
+  font-weight: 600;
 }
 
 textarea,
@@ -290,14 +320,16 @@ textarea,
 }
 
 textarea {
-  padding: 11px;
+  padding: 12px;
   resize: vertical;
   line-height: 1.6;
 }
 
+/* Expandable Sections */
+
 details {
-  padding: 13px 0 0;
-  margin-top: 13px;
+  padding: 14px 0 0;
+  margin-top: 14px;
   border-top: 1px solid var(--line);
 }
 
@@ -306,11 +338,11 @@ summary {
   color: var(--fg);
   cursor: pointer;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 650;
 }
 
 details[open] > summary {
-  margin-bottom: 12px;
+  margin-bottom: 13px;
 }
 
 #source,
@@ -318,13 +350,15 @@ details[open] > summary {
   border-top-color: var(--line);
 }
 
+/* Model Selection */
+
 .connection {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 13px;
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: 11px;
   background: var(--field);
 }
 
@@ -334,7 +368,7 @@ details[open] > summary {
 }
 
 .model-field label {
-  margin: 0 0 3px;
+  margin: 0 0 4px;
 }
 
 .model-field select {
@@ -349,17 +383,21 @@ details[open] > summary {
   padding: 7px;
   border: 0;
   color: var(--muted);
-  font-size: 10px;
+  font-size: 11px;
 }
+
+/* Context */
 
 .context-strip {
   display: flex;
   justify-content: space-between;
   gap: 10px;
-  margin: 12px 0;
+  margin: 13px 0;
   color: var(--muted);
-  font-size: 10px;
+  font-size: 11px;
 }
+
+/* Attachments */
 
 .attachment-head {
   display: flex;
@@ -371,10 +409,9 @@ details[open] > summary {
 .inline {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
   margin: 0;
   font-size: 11px;
-  letter-spacing: 0;
 }
 
 .inline input {
@@ -384,15 +421,15 @@ details[open] > summary {
 #imageList {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
-  margin-top: 10px;
+  gap: 9px;
+  margin-top: 11px;
 }
 
 .image-card {
   position: relative;
   overflow: hidden;
   border: 1px solid var(--line);
-  border-radius: 9px;
+  border-radius: 10px;
   background: var(--field);
 }
 
@@ -401,14 +438,15 @@ details[open] > summary {
   width: 100%;
   height: 90px;
   object-fit: contain;
-  background: white;
+  background: #fff;
 }
 
 .image-card span {
   display: block;
-  padding: 7px;
+  padding: 8px;
   color: var(--muted);
-  font-size: 9px;
+  font-size: 10px;
+  overflow-wrap: anywhere;
 }
 
 .image-card button {
@@ -416,23 +454,27 @@ details[open] > summary {
   top: 4px;
   right: 4px;
   padding: 1px 7px;
-  font-size: 18px;
+  font-size: 17px;
 }
 
+/* Usage */
+
 .usage-line {
-  padding: 11px;
-  margin: 17px 0 0;
-  border: 1px solid var(--line);
-  border-radius: 10px;
+  padding: 12px 0 0;
+  margin-top: 17px;
+  border-top: 1px solid var(--line);
 }
+
+/* Launcher */
 
 .launcher {
   display: block;
   padding: 11px 16px;
   margin-left: auto;
-  border-radius: 13px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
   background: var(--bg);
-  box-shadow: 0 8px 30px #0004;
+  box-shadow: 0 6px 22px #0003;
   font-size: 12px;
   font-weight: 700;
 }
@@ -446,24 +488,18 @@ details[open] > summary {
   background: var(--accent);
 }
 
-#panel[data-busy='true'] #status::before {
-  display: inline-block;
-  margin-right: 7px;
-  color: var(--accent);
-  content: '◌';
-  animation: spin 1s linear infinite;
-}
-
-.row:not(:has(button:not([hidden]))) {
-  display: none;
-}
+/* Animation */
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  * {
+  *,
+  *::before,
+  *::after {
     animation: none !important;
     transition: none !important;
   }
